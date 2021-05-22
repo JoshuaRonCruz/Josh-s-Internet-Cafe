@@ -2,11 +2,11 @@
 
 <script>
 	let drinks = [
-		{id: 1, name: "Water", image: "https://www.clipartkey.com/mpngs/m/79-798309_water-bottle-bottle-water-maza-turkish-mediterranean-unbranded.png", price: 1.00, quantity: 1, description1: "Regular, good old fashion, crystal clear, and refreshing water.", description2: "No addons for an already perfect beverage."},
+		{id: 1, name: "Water", image: "https://www.clipartkey.com/mpngs/m/79-798309_water-bottle-bottle-water-maza-turkish-mediterranean-unbranded.png", price: 1.00, quantity: 1, description1: "Regular, good old fashion, crystal clear, and refreshing water.", description2: "Some say it's the perfect beverage."},
 		{id: 2, name: "Coffee", image: "https://www.healio.com/~/media/slack-news/stock-images/fm_im/c/coffee_shutterstock.jpg", price: 3.00, quantity: 1, description1: "Standard dark roast.", description2: "Brewed for you, so you don't have to at home."},
 		{id: 3, name: "Latte", image: "https://static.vecteezy.com/system/resources/previews/001/740/365/large_2x/close-up-of-a-latte-on-a-white-background-free-photo.jpg", price: 4.75, quantity: 1, description1: "Espresso with steamed milk.", description2: ""},
 		{id: 4, name: "Mocha", image: "https://previews.123rf.com/images/punsayaporn/punsayaporn1307/punsayaporn130700121/20841305-cup-of-hot-cafe-mocha-isolated-on-white-background.jpg", price: 5.20, quantity: 1, description1: "Espresso with steamed milk and chocolate.", description2:""},
-		{id: 5, name: "Cappuccino", image: "https://previews.123rf.com/images/fanfo/fanfo1010/fanfo101000011/7969657-cappuccino-cup-coffee-isolated-on-a-white-background-.jpg", price: 4.60, quantity: 1, description1: "Two Espresso shots with steamed milk foam.", description2:""},
+		{id: 5, name: "Cappuccino", image: "https://previews.123rf.com/images/fanfo/fanfo1010/fanfo101000011/7969657-cappuccino-cup-coffee-isolated-on-a-white-background-.jpg", price: 4.60, quantity: 1, description1: "That's my secret, Cap.", description2:"Two Espresso shots with steamed milk foam."},
 		{id: 6, name: "Caramel Macchiato", image: "https://previews.123rf.com/images/belchonock/belchonock1903/belchonock190302477/118089179-glass-cup-of-tasty-caramel-macchiato-on-white-background.jpg", price: 5.50, quantity: 1, description1: "Espresso with steamed milk, vanilla, and caramel sauce.", description2:""},
 		{id: 7, name: "Espresso", image: "https://media.istockphoto.com/photos/coffee-espresso-in-white-background-picture-id545335342?k=6&m=545335342&s=170667a&w=0&h=YQU0SvpObLGQNAyz720FH1RbYfgqYui1kbpD1_1eqRo=", price: 2.50, quantity: 1, description1: "Standard shot, except with caffine instead of alcohol.", description2:""},
 		{id: 8, name: "Americano", image: "https://image.freepik.com/free-photo/white-cup-black-coffee-isolated-white-background_252965-15.jpg", price: 4.40, quantity: 1, description1: "Espresso with hot water.", description2:""}
@@ -21,76 +21,44 @@
 	]
 
 	let cart = [];
-	let cart2 = [];
 
-	const addToCart = (drink) => {
+	const addToCart = (newItem) => {
 		for(let item of cart){
-			if(item.id === drink.id){
-				drink.quantity += 1
+			if(item.id === newItem.id){
+				newItem.quantity += 1
 				cart = cart;
 				return
 			}
 		}
-		cart = [...cart, drink]
+		cart = [...cart, newItem]
 	}
 
-	const addonToCart = (addon) => {
-		for(let item2 of cart2){
-			if(item2.id === addon.id){
-				addon.quantity += 1
-				cart2 = cart2;
-				return
-			}
-		}
-		cart2 = [...cart2, addon]
-	}
 
-	const plusQuantity = (drink) => {
+	const plusQuantity = (newItem) => {
 		for(let item of cart) {
-			if(item.id === drink.id) {
-				drink.quantity += 1
+			if(item.id === newItem.id) {
+				newItem.quantity += 1
 				cart = cart;
 				return
 			}
 		}
-		cart = [...cart, drink]
+		cart = [...cart, newItem]
 	}
 
-	const plusQuantityAddon = (addon) => {
-		for(let item2 of cart2) {
-			if(item2.id === drink.id) {
-				drink.quantity += 1
-				cart2 = cart2;
-				return
-			}
-		cart2 = [...cart, addon]
-		}
-	}
-	const minusQuantity = (drink) => {
+	const minusQuantity = (newItem) => {
 		for(let item of cart) {
-			if(item.id === drink.id) {
-				drink.quantity -= 1
+			if(item.id === newItem.id) {
+				newItem.quantity -= 1
 				cart = cart;
 				return
 			}
-		cart = [...cart, drink]
 		}
+		cart = [...cart, newItem]
 	}
 
-	const minusQuantityAddon = (addon) => {
-		for(let item2 of cart2) {
-			if(item2.id === drink.id) {
-				drink.quantity += 1
-				cart2 = cart2;
-				return
-			}
-		cart2 = [...cart2, addon]
-		}
-	}
 
-	total1 = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
-	total2 = cart2.reduce((sum, item2) => sum + item2.price * item2.quantity, 0)
-$: total = total1 + total2
+$: total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
+$: roundedTotal = total.toFixed(2)
 </script>
 
 <div class ="drink-list">
@@ -101,13 +69,13 @@ $: total = total1 + total2
 			<h2>{drink.name}</h2>
 			<h4>{drink.description1}</h4>
 			<h4>{drink.description2}</h4>
-			<p>${drink.price}</p>
+			<p>{drink.price}</p>
 			<button on:click={() => addToCart(drink)}>Add Drink to Cart</button>
 			<div class="addon-list">
 				{#each addons as addon}
 				<h2>{addon.name}</h2>
-				<p>${addon.price}</p>
-				<button on: click={() => addonToCart(addon)}>Add Addon to Cart</button>
+				<p>${addon.price.toFixed(2)}</p>
+				<button on:click={() => addToCart(addon)}>Add Addon to Cart</button>
 				{/each}
 			</div>
 		</div>
@@ -115,33 +83,25 @@ $: total = total1 + total2
 </div>
 
 <div class="cart-list">
-	{#each cart as drink}
-		{#if drink.quantity > 0}
+	{#each cart as newItem}
+		{#if newItem.quantity > 0}
 		<div class="cart-item-drink">
-			<img id= "cartdrink" src={drink.image} alt={drink.name}/>
-			<h6>{drink.name}</h6>
-			<div>{drink.quantity}
-				<button on:click={() => minusQuantity(drink)}>-</button>
-				<button on:click={() => plusQuantity(drink)}>+</button>
+			{#if newItem.id < 9}
+				<img id= "cartdrink" src={newItem.image} alt={newItem.name}/>
+			{/if}
+			<h6>{newItem.name}</h6>
+			<div>{newItem.quantity}
+				<button on:click={() => minusQuantity(newItem)}>-</button>
+				<button on:click={() => plusQuantity(newItem)}>+</button>
 			</div>
-			<p>${drink.price * drink.quantity}</p>
+			<p>${newItem.price.toFixed(2) * newItem.quantity}</p>
 		</div>
 		{/if}
 	{/each}
-	{#each cart as addon}
-		{#if addon.quantity > 0}
-		<div class="cart-item-addon">
-			<h6>{addon.name}</h6>
-			<div>{addon.quantity}
-				<button on:click={() => minusQuantityAddon(addon)}>-</button>
-				<button on:click={() => plusQuantityAddon(addon)}>+</button>
-			</div>
-			<p>${addon.price * addon.quantity}</p>
-		</div>
-		{/if}
-	{/each}
+	
 	<div class= "total">
-		<h4>Total: $ {total}</h4>
+		
+		<h4>Total: $ {roundedTotal}</h4>
 		</div>
 </div>
 
@@ -198,10 +158,7 @@ $: total = total1 + total2
 		border: 2px solid;
 		padding: 10px;
 	}
-	
-	.cart-item-addon {
-		grid-template-columns: repeat(9, 1fr);
-	}
+
 
 	.cart-item-drink {
 		grid-template-columns: repeat(9, 1fr);
